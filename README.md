@@ -11,7 +11,7 @@ This project bridges Network Automation and DevOps practices by replacing manual
 The project leverages a pull-based GitOps model. All infrastructure and application states are declared directly within this repository, and Argo CD continuously ensures the local MicroK8s cluster matches the desired state.
 
 ### 🌐 Traffic Routing & Application Stack
-Incoming traffic follows a proxy-chained flow to handle API routing, certificate termination, and application traffic management securely:
+Incoming traffic follows a proxy-chained flow. The cluster utilizes edge termination at the ingress level, securely decrypting traffic before routing it to the application:
 
 **User Request** → **MicroK8s Ingress (`dev.nso`)** → **NGINX Reverse Proxy** → **Cisco NSO Container**
 
