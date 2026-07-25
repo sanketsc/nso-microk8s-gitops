@@ -1,4 +1,4 @@
-# microk8s-gitops-pipeline
+# nso-microk8s-gitops
 
 A GitOps-driven deployment architecture for running Cisco Network Services Orchestrator (NSO) on a local MicroK8s cluster.
 
