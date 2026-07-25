@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cisco-nso
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cisco-nso
+  template:
+    metadata:
+      labels:
+        app: cisco-nso
+    spec:
+      containers:
+      - name: nso
+        image: localhost:32000/cisco-nso:6.4.8
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 2024
+          name: netconf
+        volumeMounts:
+        - name: cdb-storage
+          mountPath: /var/opt/ncs/cdb
+      volumes:
+      - name: cdb-storage
+        persistentVolumeClaim:
+          claimName: nso-cdb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cisco-nso-svc
+spec:
+  selector:
+    app: cisco-nso
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: http
+  type: ClusterIP
