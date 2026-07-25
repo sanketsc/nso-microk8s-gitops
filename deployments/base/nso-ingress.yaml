@@ -4,6 +4,7 @@ metadata:
   name: cisco-nso-ingress
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    argocd.argoproj.io/ignore-healthcheck: "true"
 spec:
   ingressClassName: public
   rules:

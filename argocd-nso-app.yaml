@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cisco-nso-stack
+  namespace: argocd
+  # Finalizer ensures that deleting the Argo application cleans up Kubernetes resources cleanly
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  
+  # Source configuration: points to your repository and tracking path
+  source:
+    repoURL: 'https://github.com/sanketsc/nso-microk8s-gitops.git'
+    targetRevision: HEAD
+    path: deployments/base
+
+  # Destination cluster and namespace configuration
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+
+  # Automated synchronization policy
+  syncPolicy:
+    automated:
+      prune: true     # Deletes resources on the cluster if they are removed from Git
+      selfHeal: true  # Automatically fixes drift if someone modifies resources manually with kubectl
+    syncOptions:
+      - CreateNamespace=true  # Automatically creates target namespace if it doesn't exist
